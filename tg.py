@@ -9,26 +9,25 @@ apiToken = '1b3d4575b5de40e1bb35967cd7ea97f3'
 
 api = Api(apiToken)
 api.set_granularity('daily')
-token = '5747802076:AAEiCodUJQv0thfDQ4GO4BBTsa1EGVMpYx4'
+token = '5905366611:AAEeeOK7F1HCJWHKGm8iExJdpPs8p4wRGv4'
 bot = telebot.TeleBot(token, parse_mode=None)
 
 def higher_temp(city):
     forecast = api.get_forecast(city=city, hours=1)
-    res =  forecast.get_series(['high_temp','low_temp','weather'])
+    res = forecast.get_series(['high_temp','low_temp','weather'])
     return res[0]['high_temp']
-print(higher_temp('Moscow'))
+
 
 def lower_temp(city):
     forecast = api.get_forecast(city=city, hours=1)
     res = forecast.get_series(['high_temp', 'low_temp', 'weather'])
     return res[0]['low_temp']
-print(lower_temp('Woscow'))
 
 def weather(city):
     forecast = api.get_forecast(city=city, hours=1)
     res = forecast.get_series(['high_temp', 'low_temp', 'weather'])
     return res
-print(weather('Woscow'))
+
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -36,17 +35,29 @@ def start(message):
     regbt1 = types.KeyboardButton('Санкт-Петербург')
     regbt2 = types.KeyboardButton('Москва')
     regbt3 = types.KeyboardButton('Самара')
-    markup.add(regbt1, regbt2, regbt3)
-    db.insert({message.chat.username: message.chat.id})
+    regbt4 = types.KeyboardButton('Новый Урегной')
+    # otherbt = types.KeyboardButton('Другой город')
+    markup.add(regbt1, regbt2, regbt3, regbt4)
     bot.send_message(message.chat.id, "Выберите регион:", reply_markup=markup)
 
 @bot.message_handler(func=lambda m: True)
 def btn_handler(message):
-    if message.text == 'Санкт-Петербург':
-        bot.send_message(message.chat.id, "Погода в этом часу:")
-        bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Saint Petersburg')))
-    if message.text == "Москва":
-        bot.send_message(message.chat.id, "Погода в этом часу:")
-        bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Москва')))
+    try:
+        bot.send_message(message.chat.id, 'Погода сегодня:')
+        bot.send_message(message.chat.id, 'Самая высокая температура:' + ' ' + str(higher_temp(message.text)) + "ºC")
+        bot.send_message(message.chat.id, 'Самая низкая температура:' + " " + str(lower_temp(message.text)) + "ºC")
+    except:
+        bot.send_message(message.chat.id, 'В данный момент погода недоступна для вашего региона, или создатель должен купить подписку за 8$')
+
+    # bot.send_message(message.chat.id, 'Погода сегодня:')
+    # bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Moscow')))
+
+    # if message.text == 'Санкт-Петербург':
+    #     bot.send_message(message.chat.id, "Погода в этом часу:")
+    #     bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Saint Petersburg')))
+    # if message.text == "Москва":
+    #     bot.send_message(message.chat.id, "Погода в этом часу:")
+    #     bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp(message.text)))
+
 
 bot.infinity_polling()
