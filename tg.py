@@ -36,28 +36,30 @@ def start(message):
     regbt2 = types.KeyboardButton('Москва')
     regbt3 = types.KeyboardButton('Самара')
     regbt4 = types.KeyboardButton('Новый Урегной')
-    # otherbt = types.KeyboardButton('Другой город')
-    markup.add(regbt1, regbt2, regbt3, regbt4)
+    otherbt = types.KeyboardButton('Другой город')
+    markup.add(regbt1, regbt2, regbt3, regbt4, otherbt)
     bot.send_message(message.chat.id, "Выберите регион:", reply_markup=markup)
 
 @bot.message_handler(func=lambda m: True)
 def btn_handler(message):
-    try:
-        bot.send_message(message.chat.id, 'Погода сегодня:')
-        bot.send_message(message.chat.id, 'Самая высокая температура:' + ' ' + str(higher_temp(message.text)) + "ºC")
-        bot.send_message(message.chat.id, 'Самая низкая температура:' + " " + str(lower_temp(message.text)) + "ºC")
-    except:
-        bot.send_message(message.chat.id, 'В данный момент погода недоступна для вашего региона, или создатель должен купить подписку за 8$')
+    if message.text != 'Другой город':
+        try:
+            bot.send_message(message.chat.id, 'Погода сегодня:')
+            bot.send_message(message.chat.id, 'Самая высокая температура:' + ' ' + str(higher_temp(message.text)) + "ºC")
+            bot.send_message(message.chat.id, 'Самая низкая температура:' + " " + str(lower_temp(message.text)) + "ºC")
+        except:
+            bot.send_message(message.chat.id, 'В данный момент погода недоступна для вашего региона, или создатель должен купить подписку за 8$')
+    else:
+        bot.send_message(message.chat.id, 'Напишите название горрода')
+        # bot.send_message(message.chat.id, 'Погода сегодня:')
+        # bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Moscow')))
 
-    # bot.send_message(message.chat.id, 'Погода сегодня:')
-    # bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Moscow')))
-
-    # if message.text == 'Санкт-Петербург':
-    #     bot.send_message(message.chat.id, "Погода в этом часу:")
-    #     bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Saint Petersburg')))
-    # if message.text == "Москва":
-    #     bot.send_message(message.chat.id, "Погода в этом часу:")
-    #     bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp(message.text)))
+        # if message.text == 'Санкт-Петербург':
+        #     bot.send_message(message.chat.id, "Погода в этом часу:")
+        #     bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Saint Petersburg')))
+        # if message.text == "Москва":
+        #     bot.send_message(message.chat.id, "Погода в этом часу:")
+        #     bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp(message.text)))
 
 
 bot.infinity_polling()
