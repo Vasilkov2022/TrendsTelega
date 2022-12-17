@@ -56,15 +56,6 @@ def btn_handler(message):
             bot.send_message(message.chat.id, 'В данный момент погода недоступна для вашего региона, или создатель должен купить подписку за 8$')
     else:
         bot.send_message(message.chat.id, 'Напишите название горрода')
-        # bot.send_message(message.chat.id, 'Погода сегодня:')
-        # bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Moscow')))
-
-        # if message.text == 'Санкт-Петербург':
-        #     bot.send_message(message.chat.id, "Погода в этом часу:")
-        #     bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp('Saint Petersburg')))
-        # if message.text == "Москва":
-        #     bot.send_message(message.chat.id, "Погода в этом часу:")
-        #     bot.send_message(message.chat.id, 'Самая высокая температура:' + str(higher_temp(message.text)))
 
 
 bot.infinity_polling()
