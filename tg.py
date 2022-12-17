@@ -28,6 +28,10 @@ def weather(city):
     res = forecast.get_series(['high_temp', 'low_temp', 'weather'])
     return res
 
+def descript(city):
+    forecast = api.get_forecast(city=city, hours=1)
+    return forecast.get_series(['weather'])[0].get('weather').get('description')
+
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -47,6 +51,7 @@ def btn_handler(message):
             bot.send_message(message.chat.id, 'Погода сегодня:')
             bot.send_message(message.chat.id, 'Самая высокая температура:' + ' ' + str(higher_temp(message.text)) + "ºC")
             bot.send_message(message.chat.id, 'Самая низкая температура:' + " " + str(lower_temp(message.text)) + "ºC")
+            bot.send_message(message.chat.id, 'Описание:' + ' ' + str(descript(message.text)))
         except:
             bot.send_message(message.chat.id, 'В данный момент погода недоступна для вашего региона, или создатель должен купить подписку за 8$')
     else:
